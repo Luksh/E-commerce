@@ -24,3 +24,16 @@ export const registerUserValidation = Yup.object({
     .trim()
     .oneOf(["male", "female", "preferNotToSay"], "Gender must be either male or female or preferNotToSay."),
 });
+
+export const loginUserValidation = Yup.object({
+  email: Yup.string()
+    .email("Must be a valid email.")
+    .required("Email is required.")
+    .trim()
+    .max(65, "Email must be at max 65 characters.")
+    .lowercase(),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters.")
+    .max(20, "Password must be at max 20 characters.")
+    .required("Password is required."),
+});
