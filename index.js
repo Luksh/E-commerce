@@ -2,6 +2,7 @@ import express from "express";
 import connectDB from "./db.connect.js";
 import userRoutes from "./src/user/user.routes.js";
 import productRoutes from "./Product/product.routes.js";
+import cartRoutes from "./Cart/cart.routes.js";
 
 const app = express();
 
@@ -11,6 +12,7 @@ connectDB();
 
 app.use(userRoutes);
 app.use(productRoutes);
+app.use(cartRoutes);
 
 const PORT = 8001;
 

@@ -1,9 +1,9 @@
 import express from "express";
 import { isSeller, isUser } from "../Middleware/authentication.middleware.js";
-import validateReqBody from "../Middleware/validation.middleware.js";
-import { addProductValidation } from "./product.validation.js";
-import Product from "./product.model.js";
 import validateIdFromReqParams from "../Middleware/valid.params.middleware.js";
+import validateReqBody from "../Middleware/validation.middleware.js";
+import Product from "./product.model.js";
+import { addProductValidation } from "./product.validation.js";
 
 const router = express.Router();
 
