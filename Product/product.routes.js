@@ -57,4 +57,35 @@ router.delete("/product/delete/:id", isSeller, validateIdFromReqParams, async (r
   return res.status(200).send({ message: "Product deleted successfully." });
 });
 
+router.put(
+  "/product/update/:id",
+  isSeller,
+  validateIdFromReqParams,
+  validateReqBody(addProductValidation),
+  async (req, res) => {
+    const productId = req.params.id;
+
+    const product = await Product.findOne({ _id: productId });
+
+    if (!product) {
+      return res.status(404).send({ message: "Product does not exist." });
+    }
+
+    const sellerId = product.sellerId;
+    const loggedInUserId = req.loggedInUserId;
+
+    const isProductOwner = sellerId.equals(loggedInUserId);
+
+    if (!isProductOwner) {
+      return res.status(403).send({ message: "You are not authorized to update this product." });
+    }
+
+    const updatedProduct = req.body;
+
+    await Product.updateOne({ _id: productId }, updatedProduct);
+
+    return res.status(200).send({ message: "Product updated successfully." });
+  }
+);
+
 export default router;
