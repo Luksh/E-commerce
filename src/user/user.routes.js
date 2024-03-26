@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { loginUserValidation, registerUserValidation } from "./user.validation.js";
-import User from "./user.model.js";
 import bcrypt from "bcrypt";
-import validateReqBody from "../../Middleware/validation.middleware.js";
+import { Router } from "express";
 import jwt from "jsonwebtoken";
+import validateReqBody from "../../Middleware/validation.middleware.js";
+import User from "./user.model.js";
+import { loginUserValidation, registerUserValidation } from "./user.validation.js";
 
 const router = Router();
 
