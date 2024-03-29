@@ -1,9 +1,9 @@
 import express from "express";
-import { isSeller, isUser } from "../Middleware/authentication.middleware.js";
+import { isBuyer, isSeller, isUser } from "../Middleware/authentication.middleware.js";
 import validateIdFromReqParams from "../Middleware/valid.params.middleware.js";
 import validateReqBody from "../Middleware/validation.middleware.js";
 import Product from "./product.model.js";
-import { addProductValidation } from "./product.validation.js";
+import { addProductValidation, paginationValidation } from "./product.validation.js";
 
 const router = express.Router();
 
@@ -87,5 +87,61 @@ router.put(
     return res.status(200).send({ message: "Product updated successfully." });
   }
 );
+
+router.get("/product/list/buyer", isBuyer, validateReqBody(paginationValidation), async (req, res) => {
+  const { page, limit } = req.body;
+
+  const skip = (page - 1) * limit;
+
+  const products = await Product.aggregate([
+    { $match: {} },
+    { $skip: skip },
+    { $limit: limit },
+    {
+      $project: {
+        name: 1,
+        brand: 1,
+        price: 1,
+        category: 1,
+        freeShipping: 1,
+        availableQuantity: 1,
+        desciption: 1,
+        image: 1,
+      },
+    },
+  ]);
+
+  return res.status(200).send({ message: "Success", productList: products });
+});
+
+router.get("/product/list/seller", isSeller, validateReqBody(paginationValidation), async (req, res) => {
+  const { page, limit } = req.body;
+
+  const skip = (page - 1) * limit;
+
+  const products = await Product.aggregate([
+    { $match: { sellerId: req.loggedInUserId } },
+    { $skip: skip },
+    { $limit: limit },
+    {
+      $project: {
+        name: 1,
+        brand: 1,
+        price: 1,
+        category: 1,
+        freeShipping: 1,
+        availableQuantity: 1,
+        desciption: 1,
+        image: 1,
+        // sellerId: 0,
+        // createdAt: 0,
+        // updatedAt: 0,
+        // __v: 0,
+      },
+    },
+  ]);
+
+  return res.status(200).send({ message: "Success", productList: products });
+});
 
 export default router;

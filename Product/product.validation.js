@@ -1,3 +1,4 @@
+import e from "express";
 import Yup from "yup";
 
 export const addProductValidation = Yup.object({
@@ -36,4 +37,9 @@ export const addProductValidation = Yup.object({
     .required("Description is required.")
     .min(100, "Description must be at least 100 characters.")
     .max(1000, "Description should not be greater than 1000 characters."),
+});
+
+export const paginationValidation = Yup.object({
+  page: Yup.number().integer().min(1).default(1).required(),
+  limit: Yup.number().integer().min(1).max(100).default(5),
 });
