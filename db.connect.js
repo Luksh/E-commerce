@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
-const userName = "luksh";
-const password = encodeURIComponent("luksh55");
-const databaseName = "Ecommerce";
-const databaseHost = "cluster0.j4uuoum.mongodb.net";
+const userName = process.env.DB_USER_NAME;
+const password = encodeURIComponent(process.env.DB_PASSWORD);
+const databaseName = process.env.DB_NAME;
+const databaseHost = process.env.DB_HOST;
 
 const dbURL = `mongodb+srv://${userName}:${password}@${databaseHost}/${databaseName}?retryWrites=true&w=majority&appName=Cluster0`;
 

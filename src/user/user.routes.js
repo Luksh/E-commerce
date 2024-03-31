@@ -55,7 +55,7 @@ router.post("/user/login", validateReqBody(loginUserValidation), async (req, res
   }
 
   const payLoad = { email: user.email };
-  const token = jwt.sign(payLoad, "096afdd0bdeb5f42b11551f6ebd46f30347fc1fa", { expiresIn: "1h" });
+  const token = jwt.sign(payLoad, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 
   user.password = undefined;
 
