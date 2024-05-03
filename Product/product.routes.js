@@ -88,7 +88,7 @@ router.put(
   }
 );
 
-router.get("/product/list/buyer", isBuyer, validateReqBody(paginationValidation), async (req, res) => {
+router.post("/product/list/buyer", isBuyer, validateReqBody(paginationValidation), async (req, res) => {
   const { page, limit } = req.body;
 
   const skip = (page - 1) * limit;
@@ -105,7 +105,7 @@ router.get("/product/list/buyer", isBuyer, validateReqBody(paginationValidation)
         category: 1,
         freeShipping: 1,
         availableQuantity: 1,
-        desciption: 1,
+        description: { $substr: ["$description", 0, 100] },
         image: 1,
       },
     },
@@ -114,7 +114,7 @@ router.get("/product/list/buyer", isBuyer, validateReqBody(paginationValidation)
   return res.status(200).send({ message: "Success", productList: products });
 });
 
-router.get("/product/list/seller", isSeller, validateReqBody(paginationValidation), async (req, res) => {
+router.post("/product/list/seller", isSeller, validateReqBody(paginationValidation), async (req, res) => {
   const { page, limit } = req.body;
 
   const skip = (page - 1) * limit;
@@ -131,7 +131,7 @@ router.get("/product/list/seller", isSeller, validateReqBody(paginationValidatio
         category: 1,
         freeShipping: 1,
         availableQuantity: 1,
-        desciption: 1,
+        description: { $substr: ["$description", 0, 100] },
         image: 1,
         // sellerId: 0,
         // createdAt: 0,
